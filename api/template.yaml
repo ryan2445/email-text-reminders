@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: user-pool
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - "email"
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: user-pool-client
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      AccessTokenValidity: 24
+      IdTokenValidity: 24
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          cognitoAuthorizer:
+            UserPoolArn: !GetAtt UserPool.Arn
+      GatewayResponses:
+        DEFAULT_4xx:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Methods: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+              Access-Control-Allow-Origin: "'*'"
+        DEFAULT_5xx:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Methods: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+              Access-Control-Allow-Origin: "'*'"
+
+  Auth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Services/
+      Handler: Auth.handle
+      Runtime: python3.8
+      Events:
+        AuthApiEvent:
+          Type: Api
+          Properties:
+            Path: /auth/{proxy+}
+            Method: ANY
+            RestApiId: !Ref Api
+      Environment:
+        Variables:
+          COGNITO_CLIENT_ID: !Ref UserPoolClient
