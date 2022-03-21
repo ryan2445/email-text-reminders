@@ -4,7 +4,6 @@ const state = () => ({
   newEvent: {
     title: '',
     description: '',
-    editing: true,
     new: true
   }
 })
@@ -22,6 +21,13 @@ const actions = {
             return null
         })
     },
+    eventsPut (_, payload) {
+      return axios.put('/events', payload).then(response => {
+          return response.data
+      }).catch(() => {
+          return null
+      })
+    },
     eventsGet ({ commit }) {
       return axios.get('/events').then(response => {
           commit('eventsSet', response.data.items)
@@ -29,7 +35,14 @@ const actions = {
       }).catch(() => {
           return null
       })
-    }
+    },
+    eventsDelete (_, payload) {
+      return axios.put('/events/delete', payload).then(response => {
+          return response.data
+      }).catch(() => {
+          return null
+      })
+    },
 }
 
 const mutations = {

@@ -5,7 +5,7 @@
         <template v-for="(dialog, i) in dialogs">
             <component-dialog :key="`dialog${i}`" :params="dialog" />
         </template>
-        <v-main>
+        <v-main style="background-color:lightgrey;">
             <div class="ma-8">
                 <router-view />
             </div>

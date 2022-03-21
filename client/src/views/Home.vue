@@ -15,7 +15,7 @@
         </div>
         <div class="">
             <div v-for="(event, i) in events" :key="i">
-                <event-model :event="event" />
+                <event-model :event="event" @delete="deleteEvent($event)" class="my-4" />
             </div>
         </div>
     </div>
@@ -35,6 +35,9 @@ export default {
     methods: {
         addEvent() {
             this.events.push(this.$store.getters.newEvent)
+        },
+        deleteEvent(uuid) {
+            this.events.pop(this.events.findIndex((event) => event.uuid == uuid))
         }
     }
 }
