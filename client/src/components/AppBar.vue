@@ -3,17 +3,17 @@
         <v-app-bar-nav-icon>
             <v-icon color="white">mdi-menu</v-icon>
         </v-app-bar-nav-icon>
-        <v-toolbar-title>Toolbar Title</v-toolbar-title>
+        <v-toolbar-title>{{ user }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-menu left offset-y>
+        <v-menu left offset-y :loading="loading">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
                     <v-icon color="white">mdi-dots-vertical</v-icon>
                 </v-btn>
             </template>
-            <v-list class="pa-4">
+            <v-list class="pa-2">
                 <v-list-item v-for="(item, i) in items" :key="i"
-                    @click="handleClick(item.method)">
+                    @click="handleClick(item.method)" color="primary">
                     <v-list-item-icon>
                         <v-icon>{{ item.icon }}</v-icon>
                     </v-list-item-icon>
@@ -24,9 +24,11 @@
     </v-app-bar>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            loading: false,
             items: [
                 {
                     title: 'Sign Out',
@@ -36,12 +38,25 @@ export default {
             ]
         }
     },
+    computed: {
+        ...mapGetters(['user'])
+    },
     methods: {
         handleClick(method) {
             return this[method]()
         },
-        signOut() {
-            console.log('signOut')
+        async signOut() {
+            this.loading = true
+
+            const cognito = await this.$store.dispatch('signOut', {
+                accessToken: localStorage.AccessToken
+            })
+
+            this.loading = false
+
+            if (!cognito) return
+
+            this.$router.push('/signin')
         }
     }
 }

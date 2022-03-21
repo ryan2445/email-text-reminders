@@ -2,7 +2,7 @@
     <v-navigation-drawer app clipped>
         <v-list nav>
             <v-list-item-group active-class="deep-purple--text text--accent-4">
-                <v-list-item v-for="(link, i) in links" :key="i">
+                <v-list-item v-for="(link, i) in links" :key="i" link :to="link.route">
                     <v-list-item-icon>
                         <v-icon>{{ link.icon }}</v-icon>
                     </v-list-item-icon>
@@ -19,7 +19,8 @@ export default {
             links: [
                 {
                     title: 'Home',
-                    icon: 'mdi-home'
+                    icon: 'mdi-home',
+                    route: '/home'
                 }
             ]
         }
