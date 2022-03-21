@@ -25,6 +25,24 @@ Resources:
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
 
+  systemDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+          TableName: system
+          AttributeDefinitions:
+              - AttributeName: pk
+                AttributeType: S
+              - AttributeName: sk
+                AttributeType: S
+          KeySchema:
+              - AttributeName: pk
+                KeyType: HASH
+              - AttributeName: sk
+                KeyType: RANGE
+          ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
+
   Api:
     Type: AWS::Serverless::Api
     Properties:
@@ -67,3 +85,25 @@ Resources:
       Environment:
         Variables:
           COGNITO_CLIENT_ID: !Ref UserPoolClient
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref systemDB
+
+  Events:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Services/
+      Handler: Events.handle
+      Runtime: python3.8
+      Events:
+        EventsApiEvent:
+          Type: Api
+          Properties:
+            Path: /events
+            Method: ANY
+            RestApiId: !Ref Api
+            Auth:
+              Authorizer: cognitoAuthorizer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref systemDB
