@@ -1,10 +1,17 @@
 import axios from 'axios'
 const state = () => ({
-  events: []
+  events: [],
+  newEvent: {
+    title: '',
+    description: '',
+    editing: true,
+    new: true
+  }
 })
 
 const getters = {
-  events: (state) => state.events
+  events: (state) => state.events,
+  newEvent: (state) => state.newEvent
 }
 
 const actions = {

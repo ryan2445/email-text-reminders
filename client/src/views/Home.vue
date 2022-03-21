@@ -1,36 +1,41 @@
 <template>
     <div>
-        <div class="d-flex flex-row justify-space-between">
+        <div class="d-flex flex-row justify-space-between mb-8">
             <div class="text-h6">
-                Current Reminders
+                Current Events
             </div>
             <div>
-                <v-btn color="primary">
+                <v-btn @click="addEvent" color="primary">
                     <v-icon class="mr-2">
                         mdi-plus
                     </v-icon>
-                    Add Reminder
+                    Add Event
                 </v-btn>
             </div>
         </div>
-        <div>
+        <div class="">
             <div v-for="(event, i) in events" :key="i">
-                event
+                <event-model :event="event" />
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 export default {
     data() {
-        return {}
+        return {
+            events: []
+        }
     },
-    mounted() {
-        this.$store.dispatch('eventsGet')
+    async mounted() {
+        const response = await this.$store.dispatch('eventsGet')
+
+        this.events = response.items
     },
-    computed: {
-        ...mapGetters(['events'])
+    methods: {
+        addEvent() {
+            this.events.push(this.$store.getters.newEvent)
+        }
     }
 }
 </script>

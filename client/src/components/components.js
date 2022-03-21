@@ -15,8 +15,10 @@ Vue.component('validation-observer', ValidationObserver)
 
 import AppBar from './AppBar.vue'
 import ComponentDialog from './ComponentDialog.vue'
+import EventModel from './EventModel.vue'
 import NavDrawer from './NavDrawer.vue'
 
 Vue.component('app-bar', AppBar)
 Vue.component('component-dialog', ComponentDialog)
+Vue.component('event-model', EventModel)
 Vue.component('nav-drawer', NavDrawer)
