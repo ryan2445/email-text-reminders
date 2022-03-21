@@ -2,6 +2,11 @@ import boto3
 import json
 import os
 
+if os.getenv('AWS_SAM_LOCAL'):
+    dynamodb = boto3.resource('dynamodb', endpoint_url = 'http://dynamodb-local:8000').Table('system')
+else:
+    dynamodb = boto3.resource('dynamodb').Table('system')
+
 def signUp(event, context):
     body = json.loads(event['body'])
 
@@ -35,6 +40,14 @@ def signUpConfirm(event, context):
         ConfirmationCode=code
     )
 
+    dynamodb.put_item(
+        Item = {
+            'pk': 'USER',
+            'sk': username,
+            'email': username
+        }
+    )
+
     return {
         'statusCode': 200,
         'body': json.dumps({ 'response': response })
@@ -55,6 +68,22 @@ def signIn(event, context):
             "USERNAME": username,
             "PASSWORD": password
         }
+    )
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({ 'response': response })
+    }
+
+def signOut(event, context):
+    body = json.loads(event['body'])
+
+    access_token = body['accessToken']
+
+    cognito = boto3.client("cognito-idp", region_name="us-west-2")
+
+    response = cognito.global_sign_out(
+        AccessToken=access_token
     )
 
     return {
@@ -83,7 +112,8 @@ def handle(event, context):
         'POST': {
             '/auth/signup': signUp,
             '/auth/signupconfirm': signUpConfirm,
-            '/auth/signin': signIn
+            '/auth/signin': signIn,
+            '/auth/signout': signOut
         },
         'GET': {
             '/auth/user': getUser
@@ -96,7 +126,8 @@ def handle(event, context):
     response = methods[httpMethod][path](event, context)
     
     response['headers'] = {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
     }
 
     return response
