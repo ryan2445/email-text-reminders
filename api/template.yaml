@@ -96,10 +96,18 @@ Resources:
       Handler: Events.handle
       Runtime: python3.8
       Events:
-        EventsApiEvent:
+        EventsApiEventBase:
           Type: Api
           Properties:
             Path: /events
+            Method: ANY
+            RestApiId: !Ref Api
+            Auth:
+              Authorizer: cognitoAuthorizer
+        EventsApiEventProxy:
+          Type: Api
+          Properties:
+            Path: /events/{proxy+}
             Method: ANY
             RestApiId: !Ref Api
             Auth:

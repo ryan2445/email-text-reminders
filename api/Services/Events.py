@@ -35,6 +35,35 @@ def eventsPost(event, context):
 
     return {
         'statusCode': 200,
+        'body': json.dumps({'event_id': event_id})
+    }
+
+def eventsPut(event, context):
+    body = json.loads(event['body'])
+    username = event['requestContext']['authorizer']['claims']['email']
+
+    required_keys = ['uuid', 'title', 'description']
+
+    if not all(body.get(key) for key in required_keys):
+        return {
+            'statusCode': 400,
+            'body': 'Validation Error: Missing required keys.'
+        }
+    
+    dynamodb.update_item(
+        Key={
+            'pk': 'EVENT',
+            'sk': username + "#" + body['uuid']
+        },
+        UpdateExpression="set title=:0,description=:1",
+        ExpressionAttributeValues={
+            ':0': body['title'],
+            ':1': body['description']
+        }
+    )
+
+    return {
+        'statusCode': 200,
         'body': 'Success!'
     }
 
@@ -50,12 +79,38 @@ def eventsGet(event, context):
         'body': json.dumps({ 'items': items })
     }
 
+def eventsDelete(event, context):
+    body = json.loads(event['body'])
+    username = event['requestContext']['authorizer']['claims']['email']
+
+    if not body.get('uuid'):
+        return {
+            'statusCode': 400,
+            'body': 'Validation Error: Missing required keys.'
+        }
+    
+    dynamodb.delete_item(
+        Key = {
+            'pk': 'EVENT',
+            'sk': username + '#' + body['uuid']
+        }
+    )
+
+    return {
+        'statusCode': 200,
+        'body': 'Success!'
+    }
+
 def handle(event, context):
     response = None
 
     methods = {
         'POST': {
             '/events': eventsPost
+        },
+        'PUT': {
+            '/events': eventsPut,
+            '/events/delete': eventsDelete
         },
         'GET': {
             '/events': eventsGet
