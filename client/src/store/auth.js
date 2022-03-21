@@ -35,6 +35,14 @@ const actions = {
       }).catch(() => {
           return null
       })
+    },
+    signOut ({ commit }, payload) {
+      return axios.post('/auth/signout', payload).then(response => {
+          commit('userSet', null)
+          return response.data
+      }).catch(() => {
+          return null
+      })
     }
 }
 
