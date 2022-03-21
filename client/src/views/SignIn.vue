@@ -54,6 +54,8 @@ export default {
             if (!cognito) return
 
             this.$store.commit('tokenSet', cognito.response.AuthenticationResult)
+
+            this.$router.push('/home')
         }
     }
 }

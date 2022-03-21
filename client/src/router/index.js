@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 Vue.use(VueRouter)
 
+import Home from '../views/Home.vue'
 import SignUp from '../views/SignUp.vue'
 import SignIn from '../views/SignIn.vue'
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/signin',
     name: 'signin',
     component: SignIn
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: Home
   }
 ]
 
@@ -37,7 +43,7 @@ router.beforeEach(async (to, from, next) => {
   if (!cognito) return next('/signin')
 
   store.commit('tokenSet', { AccessToken: localStorage.AccessToken, IdToken: localStorage.IdToken })
-  store.commit('userSet', cognito.response.Username)
+  store.commit('userSet', cognito.response.UserAttributes.find(attr => attr.Name == 'email').Value)
 
   return next()
 })

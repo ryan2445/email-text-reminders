@@ -74,7 +74,7 @@ export default {
             username: null,
             password: null,
             code: null,
-            step: 2,
+            step: 1,
             loading: null
         }
     },
@@ -107,7 +107,7 @@ export default {
 
             this.loading = true
 
-            const cognito2 = await this.$store.dispatch('signin', {
+            const cognito2 = await this.$store.dispatch('signIn', {
                 username: this.username,
                 password: this.password
             })
@@ -117,6 +117,8 @@ export default {
             if (!cognito2) return
 
             this.$store.commit('tokenSet', cognito2.response.AuthenticationResult)
+
+            this.$router.push('/home')
         }
     }
 }
