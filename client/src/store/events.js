@@ -4,13 +4,24 @@ const state = () => ({
   newEvent: {
     title: '',
     description: '',
+    reminders: [
+      {
+        date: null,
+        times: []
+      }
+    ],
     new: true
+  },
+  newReminder: {
+    date: null,
+    times: []
   }
 })
 
 const getters = {
   events: (state) => state.events,
-  newEvent: (state) => state.newEvent
+  newEvent: (state) => state.newEvent,
+  newReminder: (state) => state.newReminder
 }
 
 const actions = {

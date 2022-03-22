@@ -7,7 +7,7 @@
             <div>
                 <v-btn @click="addEvent" color="primary">
                     <v-icon class="mr-2">
-                        mdi-plus
+                        mdi-checkbox-marked-circle-outline
                     </v-icon>
                     Add Event
                 </v-btn>
@@ -15,7 +15,8 @@
         </div>
         <div class="">
             <div v-for="(event, i) in events" :key="i">
-                <event-model :event="event" @delete="deleteEvent($event)" class="my-4" />
+                <event-model :event="event" @cancel="events.pop()"
+                    @delete="deleteEvent($event)" class="my-4" />
             </div>
         </div>
     </div>
