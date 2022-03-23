@@ -50,34 +50,42 @@
                     </div>
                 </div>
                 <div class="mt-8 mb-4">
-                    <div v-for="(reminder, i) in event.reminders" :key="i" class="my-2">
+                    <div v-for="(reminder, i) in temp.reminders" :key="i" class="my-2">
                         <div class="mb-2 grey--text text--darken-2">
                             Reminder #{{i + 1}}
                         </div>
                         <div class="d-flex">
-                            <div class="mr-4">
-                                <v-menu v-model="event.dateMenu"
+                            <div class="mr-4" style="width:500px;">
+                                <v-menu ref="menu" v-model="temp.dateMenu"
                                     :close-on-content-click="false"
-                                    transition="scale-transition" right offset-y
-                                    max-width="290px" min-width="auto">
+                                    transition="scale-transition" offset-y
+                                    min-width="auto">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <div style="width:200px;">
-                                            <v-text-field
-                                                :value="formattedDate(event.date)"
-                                                label="Date" prepend-icon="mdi-calendar"
-                                                hide-details readonly outlined dense
-                                                color="primary" v-bind="attrs"
-                                                v-on="on" />
-                                        </div>
+                                        <v-combobox v-model="formattedDate" multiple chips
+                                            small-chips label="Date(s)" outlined dense
+                                            prepend-inner-icon="mdi-calendar" readonly
+                                            clearable v-bind="attrs" v-on="on">
+                                        </v-combobox>
                                     </template>
-                                    <v-date-picker v-model="event.date" no-title
-                                        color="primary" @input="event.dateMenu = false" />
+                                    <v-date-picker v-model="temp.dates" multiple no-title
+                                        scrollable color="primary">
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary"
+                                            @click="temp.dateMenu = false">
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn text color="primary"
+                                            @click="saveDates(temp.dates)">
+                                            OK
+                                        </v-btn>
+                                    </v-date-picker>
                                 </v-menu>
                             </div>
-                            <div style="width:400px;">
-                                <v-autocomplete v-model="event.times"
+                            <div style="width:500px;">
+                                <v-autocomplete v-model="temp.times" clearable
                                     :items="availableTimes" outlined dense chips
-                                    small-chips label="Time(s)" multiple>
+                                    small-chips label="Time(s)" multiple
+                                    prepend-inner-icon="mdi-clock">
                                 </v-autocomplete>
                             </div>
                         </div>
@@ -133,9 +141,27 @@ export default {
                 times.push(`${i % 12 || 12}:00 ${i < 13 ? 'AM' : 'PM'}`)
             }
             return times
+        },
+        formattedDate: {
+            set(value) {
+                this.temp.dates = value
+            },
+            get() {
+                if (!this.temp || !this.temp.dates) return null
+
+                return this.temp.dates.map((date) => {
+                    const [year, month, day] = date.split('-')
+                    return `${month}/${day}/${year}`
+                })
+            }
         }
     },
     methods: {
+        saveDates(dates) {
+            this.temp.dates = dates
+
+            this.temp.dateMenu = false
+        },
         addReminder() {
             this.event.reminders.push(this.$store.getters.newReminder)
         },
@@ -148,11 +174,6 @@ export default {
         },
         edit() {
             this.editing = true
-        },
-        formattedDate(date) {
-            if (!date) return null
-            const [year, month, day] = date.split('-')
-            return `${month}/${day}/${year}`
         },
         save() {
             if (this.temp.new) {

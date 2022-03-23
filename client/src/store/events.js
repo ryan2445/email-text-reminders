@@ -6,14 +6,14 @@ const state = () => ({
     description: '',
     reminders: [
       {
-        date: null,
+        dates: [],
         times: []
       }
     ],
     new: true
   },
   newReminder: {
-    date: null,
+    dates: [],
     times: []
   }
 })
