@@ -123,6 +123,15 @@ Resources:
       Handler: EventSender.handle
       Runtime: python3.8
       Policies:
+        - Statement:
+          - Effect: Deny
+            Action:
+            - sns:Publish
+            Resource: arn:aws:sns:*:*:*
+          - Effect: Allow
+            Action:
+            - sns:Publish
+            Resource: "*"
         - DynamoDBCrudPolicy:
             TableName: !Ref systemDB
 
