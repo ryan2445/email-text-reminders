@@ -165,8 +165,6 @@ export default {
             if (this.event.new) this.$emit('cancel')
         },
         save() {
-            this.event = cloneDeep(this.temp)
-
             if (this.temp.new) return this.createEvent()
 
             return this.saveEvent()

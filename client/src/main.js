@@ -6,7 +6,7 @@ import vuetify from './plugins/vuetify'
 import router from './views/router'
 import './components/components'
 
-axios.defaults.baseURL = 'https://llmgtljesi.execute-api.us-west-2.amazonaws.com/Prod'
+axios.defaults.baseURL = 'https://78pgs8st41.execute-api.us-west-2.amazonaws.com/Prod'
 
 window.queryString = (params) => '?' + Object.keys(params).map(key => key + '=' + params[key]).join('&')
 
