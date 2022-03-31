@@ -7,7 +7,7 @@
             <div>
                 <v-btn @click="addEvent" color="primary">
                     <v-icon class="mr-2">
-                        mdi-checkbox-marked-circle-outline
+                        mdi-calendar-plus
                     </v-icon>
                     Add Event
                 </v-btn>
