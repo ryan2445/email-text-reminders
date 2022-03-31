@@ -13,7 +13,7 @@ def eventsPost(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['title', 'description']
+    required_keys = ['title', 'description', 'dates', 'times']
 
     if not all(body.get(key) for key in required_keys):
         return {
@@ -29,6 +29,8 @@ def eventsPost(event, context):
             'sk': username + '#' + event_id,
             'title': body['title'],
             'description': body['description'],
+            'dates': body['dates'],
+            'times': body['times'],
             'uuid': event_id
         }
     )
@@ -42,7 +44,7 @@ def eventsPut(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['uuid', 'title', 'description']
+    required_keys = ['uuid', 'title', 'description', 'dates', 'times']
 
     if not all(body.get(key) for key in required_keys):
         return {
@@ -55,10 +57,12 @@ def eventsPut(event, context):
             'pk': 'EVENT',
             'sk': username + "#" + body['uuid']
         },
-        UpdateExpression="set title=:0,description=:1",
+        UpdateExpression="set title=:0,description=:1,dates=:2,times=:3",
         ExpressionAttributeValues={
             ':0': body['title'],
-            ':1': body['description']
+            ':1': body['description'],
+            ':2': body['dates'],
+            '3': body['times']
         }
     )
 
