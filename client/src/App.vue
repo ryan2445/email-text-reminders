@@ -6,7 +6,7 @@
             <component-dialog :key="`dialog${i}`" :params="dialog" />
         </template>
         <v-main style="background-color:lightgrey;">
-            <div class="ma-8">
+            <div :class="user && 'ma-8'">
                 <router-view />
             </div>
         </v-main>

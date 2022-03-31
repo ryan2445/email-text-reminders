@@ -1,8 +1,11 @@
 <template>
-    <div class="d-flex">
-        <div style="width:600px;">
-            <v-card class="elevation-12 pa-4">
+    <div class="d-lg-flex">
+        <div :style="{minWidth: $vuetify.breakpoint.lgAndUp ? '400px' : '100%'}">
+            <v-card class="elevation-12 pa-4" style="height:100%;">
                 <v-card-text>
+                    <div class="mb-8 font-weight-bold text-h5">
+                        Sign In
+                    </div>
                     <validation-observer v-slot="{ handleSubmit }">
                         <v-form @submit.prevent="handleSubmit(signIn)" id="signIn">
                             <validation-provider name="Username" rules="required|email"
@@ -28,6 +31,9 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
+        </div>
+        <div class="d-lg-flex d-none">
+            <img src="@/assets/images/mountains.jpg" style="height:100vh;" />
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
-    <div class="d-flex">
-        <div class="" style="width:600px;">
-            <v-stepper v-model="step">
+    <div class="d-lg-flex">
+        <div :style="{minWidth: $vuetify.breakpoint.lgAndUp ? '400px' : '100%'}">
+            <v-stepper v-model="step" style="height:100%;">
                 <v-stepper-content step="1">
                     <v-card class="elevation-12">
                         <v-card-text>
@@ -64,6 +64,9 @@
                     </v-card>
                 </v-stepper-content>
             </v-stepper>
+        </div>
+        <div class="d-lg-flex d-none">
+            <img src="@/assets/images/mountains.jpg" style="height:100vh;" />
         </div>
     </div>
 </template>
