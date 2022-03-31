@@ -62,7 +62,7 @@ def eventsPut(event, context):
             ':0': body['title'],
             ':1': body['description'],
             ':2': body['dates'],
-            '3': body['times']
+            ':3': body['times']
         }
     )
 

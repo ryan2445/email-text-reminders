@@ -115,3 +115,22 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref systemDB
+
+  EventSender:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Services/
+      Handler: EventSender.handle
+      Runtime: python3.8
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref systemDB
+
+  EventSenderRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: "Every30Mins"
+      ScheduleExpression: "cron(0,30 * * * ? *)"
+      Targets:
+        - Arn: !GetAtt EventSender.Arn
+          Id: "event-sender-rule"
