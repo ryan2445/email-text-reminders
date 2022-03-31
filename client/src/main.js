@@ -3,7 +3,7 @@ import App from './App.vue'
 import store from './store/index'
 import axios from 'axios'
 import vuetify from './plugins/vuetify'
-import router from './router'
+import router from './views/router'
 import './components/components'
 
 axios.defaults.baseURL = 'https://llmgtljesi.execute-api.us-west-2.amazonaws.com/Prod'

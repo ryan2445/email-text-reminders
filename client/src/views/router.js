@@ -3,9 +3,9 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 Vue.use(VueRouter)
 
-import Home from '../views/Home.vue'
-import SignUp from '../views/SignUp.vue'
-import SignIn from '../views/SignIn.vue'
+import Home from './Home.vue'
+import SignUp from './SignUp.vue'
+import SignIn from './SignIn.vue'
 
 const routes = [
   {
