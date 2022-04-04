@@ -4,6 +4,7 @@ import store from '../store/index'
 Vue.use(VueRouter)
 
 import Home from './Home.vue'
+import Settings from './Settings.vue'
 import SignUp from './SignUp.vue'
 import SignIn from './SignIn.vue'
 
@@ -12,6 +13,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUp
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: Settings
   },
   {
     path: '/signin',

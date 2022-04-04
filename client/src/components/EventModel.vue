@@ -162,7 +162,7 @@ export default {
 
             this.editing = false
 
-            if (this.event.new) this.$emit('cancel')
+            if (this.temp.new) this.$emit('cancel')
         },
         save() {
             if (this.temp.new) return this.createEvent()
@@ -183,6 +183,8 @@ export default {
             this.temp.new = false
 
             this.editing = false
+
+            Object.assign(this.event, this.temp)
         },
         async saveEvent() {
             this.loading = true
@@ -192,6 +194,8 @@ export default {
             this.loading = false
 
             this.editing = false
+
+            Object.assign(this.event, this.temp)
         },
         async deleteEvent() {
             this.loading = true

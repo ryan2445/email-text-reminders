@@ -21,6 +21,11 @@ export default {
                     title: 'Home',
                     icon: 'mdi-home',
                     route: '/home'
+                },
+                {
+                    title: 'Settings',
+                    icon: 'mdi-cog',
+                    route: '/settings'
                 }
             ]
         }
