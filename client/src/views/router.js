@@ -49,7 +49,7 @@ router.beforeEach(async (to, from, next) => {
   if (!cognito) return next('/signin')
 
   store.commit('tokenSet', { AccessToken: localStorage.AccessToken, IdToken: localStorage.IdToken })
-  store.commit('userSet', cognito.response.UserAttributes.find(attr => attr.Name == 'email').Value)
+  store.commit('userSet', cognito.UserAttributes.find(attr => attr.Name == 'email').Value)
 
   return next()
 })

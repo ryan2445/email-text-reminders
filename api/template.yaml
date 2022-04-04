@@ -74,7 +74,7 @@ Resources:
     Properties:
       CodeUri: Services/
       Handler: Auth.handle
-      Runtime: python3.9
+      Runtime: python3.8
       Events:
         AuthApiEvent:
           Type: Api
@@ -94,7 +94,7 @@ Resources:
     Properties:
       CodeUri: Services/
       Handler: Events.handle
-      Runtime: python3.9
+      Runtime: python3.8
       Events:
         EventsApiEventBase:
           Type: Api
@@ -116,12 +116,31 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref systemDB
 
+  Users:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Services/
+      Handler: Users.handle
+      Runtime: python3.8
+      Events:
+        UsersApiEventBase:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: ANY
+            RestApiId: !Ref Api
+            Auth:
+              Authorizer: cognitoAuthorizer
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref systemDB
+
   EventSender:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: Services/
       Handler: EventSender.handle
-      Runtime: python3.9
+      Runtime: python3.8
       Events:
         Every30Mins:
           Type: Schedule

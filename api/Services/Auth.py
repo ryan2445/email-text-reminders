@@ -23,7 +23,7 @@ def signUp(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({ 'response': response })
+        'body': json.dumps(response)
     }
 
 def signUpConfirm(event, context):
@@ -44,13 +44,16 @@ def signUpConfirm(event, context):
         Item = {
             'pk': 'USER',
             'sk': username,
-            'email': username
+            'email': username,
+            'firstname': None,
+            'lastname': None,
+            'phone': None
         }
     )
 
     return {
         'statusCode': 200,
-        'body': json.dumps({ 'response': response })
+        'body': json.dumps(response)
     }
 
 def signIn(event, context):
@@ -72,7 +75,7 @@ def signIn(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({ 'response': response })
+        'body': json.dumps(response)
     }
 
 def signOut(event, context):
@@ -88,7 +91,7 @@ def signOut(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({ 'response': response })
+        'body': json.dumps(response)
     }
 
 def getUser(event, context):
@@ -102,7 +105,7 @@ def getUser(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({ 'response': response })
+        'body': json.dumps(response)
     }
 
 def handle(event, context):

@@ -59,7 +59,7 @@ export default {
 
             if (!cognito) return
 
-            this.$store.commit('tokenSet', cognito.response.AuthenticationResult)
+            this.$store.commit('tokenSet', cognito.AuthenticationResult)
 
             this.$router.push('/home')
         }
