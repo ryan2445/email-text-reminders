@@ -66,7 +66,7 @@
             </v-stepper>
         </div>
         <div class="d-lg-flex d-none">
-            <img src="@/assets/images/mountains.jpg" style="height:100vh;" />
+            <img src="@/assets/images/mountains_snow.jpg" />
         </div>
     </div>
 </template>

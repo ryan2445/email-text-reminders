@@ -33,7 +33,7 @@
             </v-card>
         </div>
         <div class="d-lg-flex d-none">
-            <img src="@/assets/images/mountains.jpg" style="height:100vh;" />
+            <img src="@/assets/images/mountains_sunset.jpg" style="height:100vh;" />
         </div>
     </div>
 </template>
