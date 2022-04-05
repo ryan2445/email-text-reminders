@@ -11,11 +11,10 @@ else:
     dynamodb = boto3.resource('dynamodb').Table('system')
 
 sns = boto3.client('sns')
+ses = boto3.client('ses')
 
 def handle(event, context):
-    response = dynamodb.query(
-        KeyConditionExpression=Key('pk').eq('EVENT')
-    ).get('Items')
+    response = dynamodb.query(KeyConditionExpression=Key('pk').eq('EVENT')).get('Items')
 
     events = list(filter(lambda item: not item.get('disabled'), response))
 
@@ -47,9 +46,32 @@ def handle(event, context):
                 break
 
         if is_curr_date and is_curr_time:
-            sns.publish(
-                PhoneNumber = user_phone,
-                Message = f"{_event['title']}: {_event['description']}"
-            )
+            if _event['sendSms']:
+                sns.publish(
+                    PhoneNumber = user_phone,
+                    Message = f"{_event['title']}: {_event['description']}"
+                )
+            
+            if _event['sendEmail']:
+                ses.send_email(
+                    Destination={
+                        "ToAddresses": [
+                            user_email,
+                        ]
+                    },
+                    Message={
+                        "Body": {
+                            "Text": {
+                                "Charset": "UTF-8",
+                                "Data": _event['title'],
+                            }
+                        },
+                        "Subject": {
+                            "Charset": "UTF-8",
+                            "Data": _event['description'],
+                        }
+                    },
+                    Source="ryanhoffman2445@gmail.com",
+                )
 
     return 'Success!'

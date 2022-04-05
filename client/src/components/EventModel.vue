@@ -50,6 +50,18 @@
                         </v-btn>
                     </div>
                 </div>
+                <div class="mt-4">
+                    <div class="d-flex">
+                        <div class="mr-4">
+                            <v-checkbox v-model="temp.sendEmail" label="Send Email"
+                                color="primary" :disabled="!editing" />
+                        </div>
+                        <div>
+                            <v-checkbox v-model="temp.sendSms" label="Send SMS"
+                                color="primary" :disabled="!editing" />
+                        </div>
+                    </div>
+                </div>
                 <div class="mt-8 mb-4">
                     <div class="d-flex flex-lg-row flex-column">
                         <div class="mr-4" style="max-width:500px;">

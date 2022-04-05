@@ -13,9 +13,9 @@ def eventsPost(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['title', 'description', 'dates', 'times']
+    required_keys = ['title', 'description', 'sendEmail', 'sendSms', 'dates', 'times']
 
-    if not all(body.get(key) for key in required_keys):
+    if not all(body.get(key) != None for key in required_keys):
         return {
             'statusCode': 400,
             'body': 'Validation Error: Missing required keys.'
@@ -29,6 +29,8 @@ def eventsPost(event, context):
             'sk': username + '#' + event_id,
             'title': body['title'],
             'description': body['description'],
+            'sendEmail': body['sendEmail'],
+            'sendSms': body['sendSms'],
             'dates': body['dates'],
             'times': body['times'],
             'uuid': event_id
@@ -44,9 +46,9 @@ def eventsPut(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['uuid', 'title', 'description', 'dates', 'times']
+    required_keys = ['uuid', 'title', 'description', 'sendEmail', 'sendSms', 'dates', 'times']
 
-    if not all(body.get(key) for key in required_keys):
+    if not all(body.get(key) != None for key in required_keys):
         return {
             'statusCode': 400,
             'body': 'Validation Error: Missing required keys.'
@@ -57,12 +59,14 @@ def eventsPut(event, context):
             'pk': 'EVENT',
             'sk': username + "#" + body['uuid']
         },
-        UpdateExpression="set title=:0,description=:1,dates=:2,times=:3",
+        UpdateExpression="set title=:0,description=:1,sendSms=:2,sendEmail=:3,dates=:4,times=:5",
         ExpressionAttributeValues={
             ':0': body['title'],
             ':1': body['description'],
-            ':2': body['dates'],
-            ':3': body['times']
+            ':2': body['sendSms'],
+            ':3': body['sendEmail'],
+            ':4': body['dates'],
+            ':5': body['times']
         }
     )
 

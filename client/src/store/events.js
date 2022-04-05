@@ -4,6 +4,8 @@ const state = () => ({
   newEvent: {
     title: '',
     description: '',
+    sendEmail: false,
+    sendSms: false,
     dates: [],
     times: [],
     new: true

@@ -158,3 +158,5 @@ Resources:
             Resource: "*"
         - DynamoDBCrudPolicy:
             TableName: !Ref systemDB
+        - SESCrudPolicy:
+            IdentityName: "ryanhoffman2445@gmail.com"
