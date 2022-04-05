@@ -26,7 +26,7 @@ def usersPut(event, context):
 
     required_keys = ['firstname', 'lastname', 'email', 'phone']
 
-    if not all(body.get(key) for key in required_keys):
+    if not all(body.get(key) != None for key in required_keys):
         return {
             'statusCode': 400,
             'body': 'Validation Error: Missing required keys.'

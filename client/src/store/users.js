@@ -16,8 +16,8 @@ const actions = {
             return null
         })
     },
-    usersPost(_, payload) {
-        return axios.post('/users', payload).then(response => {
+    usersPut(_, payload) {
+        return axios.put('/users', payload).then(response => {
             return response.data
         }).catch(() => {
             return null

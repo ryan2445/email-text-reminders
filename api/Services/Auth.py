@@ -45,9 +45,9 @@ def signUpConfirm(event, context):
             'pk': 'USER',
             'sk': username,
             'email': username,
-            'firstname': None,
-            'lastname': None,
-            'phone': None
+            'firstname': "",
+            'lastname': "",
+            'phone': ""
         }
     )
 

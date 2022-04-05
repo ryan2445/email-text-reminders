@@ -3,6 +3,7 @@ from boto3.dynamodb.conditions import Key
 from datetime import datetime
 import os
 import pytz
+import re
 
 if os.getenv('AWS_SAM_LOCAL'):
     dynamodb = boto3.resource('dynamodb', endpoint_url = 'http://dynamodb-local:8000').Table('system')
@@ -22,7 +23,11 @@ def handle(event, context):
     [curr_date, curr_time] = str(datetime.now(pst)).split()
 
     for _event in events:
-        disableEvent = True
+        username = _event['sk'].split("#")[0]
+
+        user = dynamodb.get_item(Key = { 'pk': 'USER', 'sk': username })['Item']
+        user_phone = '+1' + re.sub('[^0-9]','', user['phone'])
+        user_email = user['email']
 
         dates = _event['dates']
         times = _event['times']
@@ -43,7 +48,7 @@ def handle(event, context):
 
         if is_curr_date and is_curr_time:
             sns.publish(
-                PhoneNumber = '+19257868567',
+                PhoneNumber = user_phone,
                 Message = f"{_event['title']}: {_event['description']}"
             )
 
