@@ -11,6 +11,16 @@ Vue.use(VueMask)
 
 axios.defaults.baseURL = 'https://78pgs8st41.execute-api.us-west-2.amazonaws.com/Prod'
 
+axios.interceptors.response.use(
+    response => response,
+    (error) => {
+        store.commit('tokenReset')
+        store.commit('userSet', null)
+        router.push('/signin')
+        return Promise.reject(error)
+    }
+)
+
 window.queryString = (params) => '?' + Object.keys(params).map(key => key + '=' + params[key]).join('&')
 
 window.flatten = (object, curr = null, result = {}) => {

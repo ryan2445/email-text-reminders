@@ -27,7 +27,7 @@
                     <v-spacer></v-spacer>
                     <v-btn type="submit" form="signIn" color="primary" :loading="loading"
                         :disabled="loading">
-                        Log In
+                        Sign In
                     </v-btn>
                 </v-card-actions>
             </v-card>

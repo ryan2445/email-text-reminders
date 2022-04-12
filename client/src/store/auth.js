@@ -29,8 +29,9 @@ const actions = {
             return null
         })
     },
-    getUser (_, token) {
+    getUser ({commit}, token) {
       return axios.get(`/auth/user?token=${token}`).then(response => {
+          commit('userSet', response.data.UserAttributes.find(attr => attr.Name == 'email').Value)
           return response.data
       }).catch(() => {
           return null
@@ -48,6 +49,10 @@ const actions = {
 
 const mutations = {
   userSet: (state, object) => state.user = object,
+  tokenReset: (_) => {
+    localStorage.clear()
+    axios.defaults.headers.common['Authorization'] = ''
+  },
   tokenSet: (_, AuthenticationResult) => {
     localStorage.AccessToken = AuthenticationResult.AccessToken
     localStorage.IdToken = AuthenticationResult.IdToken

@@ -44,12 +44,9 @@ router.beforeEach(async (to, from, next) => {
 
   if (!token) return next('/signin')
 
-  const cognito = await store.dispatch('getUser', token)
-
-  if (!cognito) return next('/signin')
-
   store.commit('tokenSet', { AccessToken: localStorage.AccessToken, IdToken: localStorage.IdToken })
-  store.commit('userSet', cognito.UserAttributes.find(attr => attr.Name == 'email').Value)
+  
+  if (!store.getters.user) await store.dispatch('getUser', token)
 
   return next()
 })
