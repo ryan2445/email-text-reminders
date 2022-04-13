@@ -54,11 +54,11 @@
                     <div class="d-flex">
                         <div class="mr-4">
                             <v-checkbox v-model="temp.sendEmail" label="Send Email"
-                                color="primary" :disabled="!editing" />
+                                color="primary" :readonly="!editing" />
                         </div>
                         <div>
                             <v-checkbox v-model="temp.sendSms" label="Send SMS"
-                                color="primary" :disabled="!editing" />
+                                color="primary" :readonly="!editing" />
                         </div>
                     </div>
                 </div>
@@ -72,12 +72,11 @@
                                     <v-combobox v-model="formattedDate" multiple chips
                                         small-chips label="Date(s)" outlined dense
                                         prepend-inner-icon="mdi-calendar" readonly
-                                        :disabled="!editing" clearable v-bind="attrs"
-                                        v-on="on">
+                                        clearable v-bind="attrs" v-on="on">
                                     </v-combobox>
                                 </template>
                                 <v-date-picker v-model="temp.dates" multiple no-title
-                                    scrollable color="primary">
+                                    scrollable color="primary" :disabled="!editing">
                                     <v-spacer></v-spacer>
                                     <v-btn text color="primary"
                                         @click="temp.dateMenu = false">
@@ -93,7 +92,7 @@
                         <div style="max-width:500px;">
                             <v-autocomplete v-model="temp.times" @change="checkTimeLimit"
                                 clearable :items="availableTimes" outlined dense chips
-                                small-chips label="Time(s)" multiple :disabled="!editing"
+                                small-chips label="Time(s)" multiple :readonly="!editing"
                                 prepend-inner-icon="mdi-clock">
                             </v-autocomplete>
                         </div>

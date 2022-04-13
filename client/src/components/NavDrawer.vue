@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer app clipped>
         <v-list nav>
-            <v-list-item-group active-class="deep-purple--text text--accent-4">
+            <v-list-item-group active-class="primary--text text--accent-4">
                 <v-list-item v-for="(link, i) in links" :key="i" link :to="link.route">
                     <v-list-item-icon>
                         <v-icon>{{ link.icon }}</v-icon>
