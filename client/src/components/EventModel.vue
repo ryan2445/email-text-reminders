@@ -4,18 +4,13 @@
             <div class="d-flex flex-column pa-lg-8 pa-4">
                 <div class="d-flex flex-row justify-space-between align-center">
                     <div class="d-flex flex-lg-row flex-column" style="width:100%">
-                        <div class="mr-8" style="max-width:200px;">
+                        <div class="mr-4" style="max-width:200px;">
                             <div v-if="editing">
                                 <v-text-field v-model="temp.title" color="primary"
                                     label="Event Title" />
                             </div>
                             <div v-else>
-                                <div class="mb-2">
-                                    <b>Event Title</b>
-                                </div>
-                                <div>
-                                    {{ temp.title }}
-                                </div>
+                                <b>{{ temp.title }}:</b>
                             </div>
                         </div>
                         <div style="width:100%; max-width:600px;">
@@ -24,12 +19,7 @@
                                     label="Event Description" />
                             </div>
                             <div v-else>
-                                <div class="mb-2">
-                                    <b>Event Description</b>
-                                </div>
-                                <div>
-                                    {{ temp.description }}
-                                </div>
+                                {{ temp.description }}
                             </div>
                         </div>
                     </div>
@@ -50,7 +40,7 @@
                         </v-btn>
                     </div>
                 </div>
-                <div class="mt-4">
+                <div class="mt-1">
                     <div class="d-flex">
                         <div class="mr-4">
                             <v-checkbox v-model="temp.sendEmail" label="Send Email"
@@ -62,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 mb-4">
+                <div class="mt-3">
                     <div class="d-flex flex-lg-row flex-column">
                         <div class="mr-4" style="max-width:500px;">
                             <v-menu ref="menu" v-model="temp.dateMenu"
