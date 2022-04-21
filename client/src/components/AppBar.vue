@@ -38,6 +38,11 @@ export default {
       navDrawerIsMin: false,
       items: [
         {
+          title: "Settings",
+          icon: "mdi-cog",
+          method: "settings",
+        },
+        {
           title: "Sign Out",
           icon: "mdi-exit-to-app",
           method: "signOut",
@@ -51,6 +56,9 @@ export default {
   methods: {
     handleClick(method) {
       return this[method]();
+    },
+    settings() {
+      this.$router.push("/settings");
     },
     async signOut() {
       this.loading = true;
