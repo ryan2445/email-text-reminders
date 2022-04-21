@@ -60,15 +60,15 @@ def handle(event, context):
                         ]
                     },
                     Message={
+                        "Subject": {
+                            "Charset": "UTF-8",
+                            "Data": _event['title'],
+                        },
                         "Body": {
                             "Text": {
                                 "Charset": "UTF-8",
-                                "Data": _event['title'],
+                                "Data": _event['description'],
                             }
-                        },
-                        "Subject": {
-                            "Charset": "UTF-8",
-                            "Data": _event['description'],
                         }
                     },
                     Source="ryanhoffman2445@gmail.com",
