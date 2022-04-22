@@ -1,22 +1,27 @@
 <template>
-    <div>
-        <div class="d-flex flex-row justify-space-between mb-8">
-            <div class="text-h6">
-                Current Events
+    <div class="d-flex justify-center ma-lg-8 ma-4">
+        <div>
+            <div class="d-flex flex-row justify-space-between mb-8">
+                <div class="text-h6">
+                    Events List
+                </div>
+                <div>
+                    <v-btn @click="addEvent" color="primary">
+                        <v-icon class="mr-2">
+                            mdi-calendar-plus
+                        </v-icon>
+                        Add Event
+                    </v-btn>
+                </div>
             </div>
-            <div>
-                <v-btn @click="addEvent" color="primary">
-                    <v-icon class="mr-2">
-                        mdi-calendar-plus
-                    </v-icon>
-                    Add Event
-                </v-btn>
+            <div v-if="events" class="">
+                <div v-for="(event, i) in events" :key="i">
+                    <event-model :event="event" @cancel="events.pop()"
+                        @delete="deleteEvent($event)" class="my-4" />
+                </div>
             </div>
-        </div>
-        <div class="">
-            <div v-for="(event, i) in events" :key="i">
-                <event-model :event="event" @cancel="events.pop()"
-                    @delete="deleteEvent($event)" class="my-4" />
+            <div v-else>
+                <v-progress-circular indeterminate color="primary" />
             </div>
         </div>
     </div>

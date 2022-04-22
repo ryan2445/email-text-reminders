@@ -55,14 +55,14 @@
                 <div class="mt-3">
                     <div class="d-flex flex-lg-row flex-column">
                         <div class="mr-4" style="max-width:500px;">
-                            <v-menu ref="menu" v-model="temp.dateMenu"
-                                :close-on-content-click="false"
+                            <v-menu v-if="!temp.recurring" ref="menu"
+                                v-model="temp.dateMenu" :close-on-content-click="false"
                                 transition="scale-transition" offset-y min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-combobox v-model="formattedDate" multiple chips
                                         small-chips label="Date(s)" outlined dense
-                                        prepend-inner-icon="mdi-calendar" readonly
-                                        clearable v-bind="attrs" v-on="on">
+                                        hide-details prepend-inner-icon="mdi-calendar"
+                                        readonly clearable v-bind="attrs" v-on="on">
                                     </v-combobox>
                                 </template>
                                 <v-date-picker v-model="temp.dates" multiple no-title
@@ -78,28 +78,39 @@
                                     </v-btn>
                                 </v-date-picker>
                             </v-menu>
+                            <v-autocomplete v-else v-model="temp.recurringDays" clearable
+                                :items="availableRecurringDays" outlined dense chips
+                                hide-details small-chips label="Day(s)" multiple
+                                :readonly="!editing" prepend-inner-icon="mdi-calendar">
+                            </v-autocomplete>
                         </div>
                         <div style="max-width:500px;">
                             <v-autocomplete v-model="temp.times" @change="checkTimeLimit"
                                 clearable :items="availableTimes" outlined dense chips
-                                small-chips label="Time(s)" multiple :readonly="!editing"
-                                prepend-inner-icon="mdi-clock">
+                                hide-details small-chips label="Time(s)" multiple
+                                :readonly="!editing" prepend-inner-icon="mdi-clock">
                             </v-autocomplete>
                         </div>
                     </div>
                 </div>
-                <div v-if="editing" class="text-right d-flex justify-end">
-                    <v-btn @click="cancel" color="grey lighten-1" class="mr-4"
-                        :loading="loading" :disabled="loading" small>
-                        Cancel
-                    </v-btn>
-                    <v-btn @click="save" color="primary" :loading="loading"
-                        :disabled="loading" small>
-                        <v-icon class="mr-2" small>
-                            mdi-content-save
-                        </v-icon>
-                        Save
-                    </v-btn>
+                <div v-if="editing" class="d-flex justify-space-between mt-4">
+                    <div>
+                        <v-switch v-model="temp.recurring" label="Recurring?"
+                            color="primary" dense hide-details class="ma-0" />
+                    </div>
+                    <div>
+                        <v-btn @click="cancel" class="mr-4" :loading="loading"
+                            :disabled="loading" small text>
+                            Cancel
+                        </v-btn>
+                        <v-btn @click="save" color="primary" :loading="loading"
+                            :disabled="loading" small>
+                            <v-icon class="mr-2" small>
+                                mdi-content-save
+                            </v-icon>
+                            Save
+                        </v-btn>
+                    </div>
                 </div>
             </div>
         </v-card>
@@ -118,7 +129,16 @@ export default {
         return {
             editing: false,
             loading: false,
-            temp: cloneDeep(this.event)
+            temp: cloneDeep(this.event),
+            availableRecurringDays: [
+                'Mondays',
+                'Tuesdays',
+                'Wednesdays',
+                'Thursdays',
+                'Fridays',
+                'Saturdays',
+                'Sundays'
+            ]
         }
     },
     mounted() {

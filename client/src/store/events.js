@@ -8,7 +8,9 @@ const state = () => ({
     sendSms: false,
     dates: [],
     times: [],
-    new: true
+    new: true,
+    recurring: false,
+    recurringDays: []
   }
 })
 

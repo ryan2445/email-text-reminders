@@ -46,7 +46,7 @@ def eventsPut(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['uuid', 'title', 'description', 'sendEmail', 'sendSms', 'dates', 'times']
+    required_keys = ['uuid', 'title', 'description', 'sendEmail', 'sendSms', 'dates', 'times', 'recurring', 'recurringDays']
 
     if not all(body.get(key) != None for key in required_keys):
         return {
@@ -59,14 +59,16 @@ def eventsPut(event, context):
             'pk': 'EVENT',
             'sk': username + "#" + body['uuid']
         },
-        UpdateExpression="set title=:0,description=:1,sendSms=:2,sendEmail=:3,dates=:4,times=:5",
+        UpdateExpression="set title=:0,description=:1,sendSms=:2,sendEmail=:3,dates=:4,times=:5,recurring=:6,recurringDays=:7",
         ExpressionAttributeValues={
             ':0': body['title'],
             ':1': body['description'],
             ':2': body['sendSms'],
             ':3': body['sendEmail'],
             ':4': body['dates'],
-            ':5': body['times']
+            ':5': body['times'],
+            ':6': body['recurring'],
+            ':7': body['recurringDays']
         }
     )
 

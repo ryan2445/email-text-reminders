@@ -20,6 +20,7 @@ def handle(event, context):
 
     pst = pytz.timezone('America/Los_Angeles')
     [curr_date, curr_time] = str(datetime.now(pst)).split()
+    day_name = datetime.now(pst).strftime("%A")
 
     for _event in events:
         username = _event['sk'].split("#")[0]
@@ -28,14 +29,19 @@ def handle(event, context):
         user_phone = '+1' + re.sub('[^0-9]','', user['phone'])
         user_email = user['email']
 
-        dates = _event['dates']
+        dates = _event['recurringDays'] if _event['recurring'] else _event['dates']
         times = _event['times']
 
         is_curr_date = False
         for date in dates:
-            if curr_date == date:
-                is_curr_date = True
-                break
+            if _event['recurring']:
+                if day_name in date:
+                    is_curr_date = True
+                    break
+            else:
+                if curr_date == date:
+                    is_curr_date = True
+                    break
 
         is_curr_time = False
         for time in times:
@@ -62,12 +68,12 @@ def handle(event, context):
                     Message={
                         "Subject": {
                             "Charset": "UTF-8",
-                            "Data": _event['title'],
+                            "Data": _event['title']
                         },
                         "Body": {
                             "Text": {
                                 "Charset": "UTF-8",
-                                "Data": _event['description'],
+                                "Data": _event['description']
                             }
                         }
                     },
