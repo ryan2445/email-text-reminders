@@ -43,7 +43,10 @@ export default {
             this.events.push(this.$store.getters.newEvent)
         },
         deleteEvent(uuid) {
-            this.events.pop(this.events.findIndex((event) => event.uuid == uuid))
+            this.events.splice(
+                this.events.findIndex((event) => event.uuid == uuid),
+                1
+            )
         }
     }
 }

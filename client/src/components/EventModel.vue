@@ -97,18 +97,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex flex-lg-row flex-column mt-4">
-                    <div class="mr-4" style="flex:1;">
+                <div class="d-flex flex-lg-row flex-column flex-wrap mt-4">
+                    <div v-if="temp.addPhones.length || editing" class="mr-4"
+                        style="flex:1;">
                         <div>
                             <i>Add Phone Numbers:</i>
                         </div>
-                        <div class="d-flex flex-row flex-wrap">
+                        <v-chip-group>
                             <v-chip v-for="(addPhone, i) in temp.addPhones" :key="i" small
                                 color="primary" text-color="white"
-                                class="justify-center ma-1" style="width:115px;">
+                                class="justify-center ma-1" style="width:115px;"
+                                @click="editing && removePhoneFromTemp(i)">
                                 {{ addPhone }}
                             </v-chip>
-                        </div>
+                        </v-chip-group>
                         <div v-if="editing" class="mt-2" style="width:200px;">
                             <v-text-field v-model="addPhone" v-mask="'(###) ###-####'"
                                 color="primary" placeholder="(###) ###-####" outlined
@@ -118,17 +120,18 @@
                             </v-text-field>
                         </div>
                     </div>
-                    <div style="flex:1;">
+                    <div v-if="temp.addEmails.length || editing" style="flex:1;">
                         <div>
                             <i>Add Emails:</i>
                         </div>
-                        <div class="d-flex flex-row flex-wrap">
+                        <v-chip-group>
                             <v-chip v-for="(addEmail, i) in temp.addEmails" :key="i" small
                                 color="primary" text-color="white"
-                                class="justify-center ma-1" style="width:115px;">
+                                class="justify-center ma-1" style="width:115px;"
+                                @click="editing && removeEmailFromTemp(i)">
                                 {{ addEmail }}
                             </v-chip>
-                        </div>
+                        </v-chip-group>
                         <div v-if="editing" class="mt-2" style="width:200px;">
                             <v-text-field v-model="addEmail" color="primary"
                                 placeholder="example@email.com" outlined dense
@@ -221,10 +224,16 @@ export default {
 
             this.addPhone = ''
         },
+        removePhoneFromTemp(index) {
+            this.temp.addPhones.splice(index, 1)
+        },
         addEmailToTemp() {
             this.temp.addEmails.push(this.addEmail)
 
             this.addEmail = ''
+        },
+        removeEmailFromTemp(index) {
+            this.temp.addEmails.splice(index, 1)
         },
         checkTimeLimit() {
             if (this.temp.times.length > 4) this.temp.times.pop()
