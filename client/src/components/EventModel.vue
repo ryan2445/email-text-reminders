@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :style="$vuetify.breakpoint.smAndDown ? '' : 'min-width:1000px;'">
         <v-card>
             <div class="d-flex flex-column pa-lg-8 pa-4">
                 <div class="d-flex flex-row justify-space-between align-center">
@@ -42,7 +42,11 @@
                 </div>
                 <div class="mt-1">
                     <div class="d-flex">
-                        <div class="mr-4">
+                        <div v-if="editing" class="mr-6">
+                            <v-switch v-model="temp.recurring" label="Recurring?"
+                                color="primary" />
+                        </div>
+                        <div class="mr-6">
                             <v-checkbox v-model="temp.sendEmail" label="Send Email"
                                 color="primary" :readonly="!editing" />
                         </div>
@@ -93,11 +97,31 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="editing" class="d-flex justify-space-between mt-4">
-                    <div>
-                        <v-switch v-model="temp.recurring" label="Recurring?"
-                            color="primary" dense hide-details class="ma-0" />
+                <div class="d-flex flex-lg-row flex-column mt-4">
+                    <div style="max-width:400px;">
+                        <div>
+                            <i>Add Phone Numbers:</i>
+                        </div>
+                        <div class="d-flex flex-row flex-wrap">
+                            <v-chip v-for="(addPhone, i) in temp.addPhones" :key="i" small
+                                color="primary" text-color="white"
+                                class="justify-center ma-1" style="width:115px;">
+                                {{ addPhone }}
+                            </v-chip>
+                        </div>
+                        <div v-if="editing" class="mt-2" style="width:200px;">
+                            <v-text-field v-model="temp.addPhone"
+                                v-mask="'(###) ###-####'" color="primary"
+                                placeholder="(123) 456-7890" outlined dense hide-details
+                                append-icon="mdi-plus" @click:append="addPhone()"
+                                @keyup.enter="addPhone()">
+                            </v-text-field>
+                        </div>
                     </div>
+                    <div style="max-width:400px;">
+                    </div>
+                </div>
+                <div v-if="editing" class="d-flex justify-end mt-4">
                     <div>
                         <v-btn @click="cancel" class="mr-4" :loading="loading"
                             :disabled="loading" small text>
@@ -170,6 +194,13 @@ export default {
         }
     },
     methods: {
+        addPhone() {
+            if (this.temp.addPhone.replace(/\D/g, '').length != 10) return
+
+            this.temp.addPhones.push(this.temp.addPhone)
+
+            this.temp.addPhone = ''
+        },
         checkTimeLimit() {
             if (this.temp.times.length > 4) this.temp.times.pop()
         },

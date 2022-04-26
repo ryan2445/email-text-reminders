@@ -10,7 +10,11 @@ const state = () => ({
     times: [],
     new: true,
     recurring: false,
-    recurringDays: []
+    recurringDays: [],
+    addPhone: '',
+    addPhones: [],
+    addEmail: '',
+    addEmails: []
   }
 })
 

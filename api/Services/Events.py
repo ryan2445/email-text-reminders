@@ -13,7 +13,7 @@ def eventsPost(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['title', 'description', 'sendEmail', 'sendSms', 'dates', 'times']
+    required_keys = ['title', 'description', 'sendEmail', 'sendSms', 'dates', 'times', 'recurring', 'recurringDays', 'addPhones', 'addEmails']
 
     if not all(body.get(key) != None for key in required_keys):
         return {
@@ -33,6 +33,10 @@ def eventsPost(event, context):
             'sendSms': body['sendSms'],
             'dates': body['dates'],
             'times': body['times'],
+            'recurring': body['recurring'],
+            'recurringDays': body['recurringDays'],
+            'addPhones': body['addPhones'],
+            'addEmails': body['addEmails'],
             'uuid': event_id
         }
     )
@@ -46,7 +50,7 @@ def eventsPut(event, context):
     body = json.loads(event['body'])
     username = event['requestContext']['authorizer']['claims']['email']
 
-    required_keys = ['uuid', 'title', 'description', 'sendEmail', 'sendSms', 'dates', 'times', 'recurring', 'recurringDays']
+    required_keys = ['uuid', 'title', 'description', 'sendEmail', 'sendSms', 'dates', 'times', 'recurring', 'recurringDays', 'addPhones', 'addEmails']
 
     if not all(body.get(key) != None for key in required_keys):
         return {
@@ -59,7 +63,7 @@ def eventsPut(event, context):
             'pk': 'EVENT',
             'sk': username + "#" + body['uuid']
         },
-        UpdateExpression="set title=:0,description=:1,sendSms=:2,sendEmail=:3,dates=:4,times=:5,recurring=:6,recurringDays=:7",
+        UpdateExpression="set title=:0,description=:1,sendSms=:2,sendEmail=:3,dates=:4,times=:5,recurring=:6,recurringDays=:7,addPhones=:8,addEmails=:9",
         ExpressionAttributeValues={
             ':0': body['title'],
             ':1': body['description'],
@@ -68,7 +72,9 @@ def eventsPut(event, context):
             ':4': body['dates'],
             ':5': body['times'],
             ':6': body['recurring'],
-            ':7': body['recurringDays']
+            ':7': body['recurringDays'],
+            ':8': body['addPhones'],
+            ':9': body['addEmails']
         }
     )
 
