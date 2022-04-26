@@ -5,7 +5,7 @@
         <template v-for="(dialog, i) in dialogs">
             <component-dialog :key="`dialog${i}`" :params="dialog" />
         </template>
-        <v-main style="background-color: lightgrey">
+        <v-main :style="user && 'background-color: lightgrey'">
             <div :style="user && 'max-width:1440px; margin:auto;'">
                 <router-view />
             </div>
@@ -28,6 +28,8 @@ export default {
 <style>
 * {
     text-transform: none;
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 500;
 }
 ::-webkit-scrollbar {
     width: 5px;

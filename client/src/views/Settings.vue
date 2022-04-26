@@ -1,16 +1,17 @@
 <template>
     <div class="d-flex justify-center ma-lg-8 ma-4">
         <v-card v-if="userProfile" class="pa-10">
-            <div class="d-flex mb-8">
-                <div class="text-h6">Account Settings</div>
+            <div class="text-center mb-8"
+                style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
+                Account Settings
             </div>
             <div class="d-flex flex-column" style="max-width: 300px">
                 <div class="d-flex">
-                    <div class="mr-4">
+                    <div class="mr-4" style="flex:1;">
                         <v-text-field v-model="temp.firstname" label="First Name"
                             color="primary" />
                     </div>
-                    <div>
+                    <div style="flex:1;">
                         <v-text-field v-model="temp.lastname" label="Last Name"
                             color="primary" />
                     </div>

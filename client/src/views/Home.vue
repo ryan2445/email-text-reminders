@@ -2,7 +2,7 @@
     <div class="d-flex justify-center ma-lg-8 ma-4">
         <div :style="$vuetify.breakpoint.smAndDown ? 'width:100%' : 'min-width:1000px;'">
             <div class="d-flex flex-row justify-space-between mb-8">
-                <div class="text-h6">
+                <div style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
                     Events List
                 </div>
                 <div>
