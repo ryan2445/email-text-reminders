@@ -58,7 +58,7 @@
                 </div>
                 <div class="mt-3">
                     <div class="d-flex flex-lg-row flex-column">
-                        <div class="mr-4" style="max-width:500px;">
+                        <div class="mr-4" style="flex:1;">
                             <v-menu v-if="!temp.recurring" ref="menu"
                                 v-model="temp.dateMenu" :close-on-content-click="false"
                                 transition="scale-transition" offset-y min-width="auto">
@@ -88,7 +88,7 @@
                                 :readonly="!editing" prepend-inner-icon="mdi-calendar">
                             </v-autocomplete>
                         </div>
-                        <div style="max-width:500px;">
+                        <div style="flex:1;">
                             <v-autocomplete v-model="temp.times" @change="checkTimeLimit"
                                 clearable :items="availableTimes" outlined dense chips
                                 hide-details small-chips label="Time(s)" multiple
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="d-flex flex-lg-row flex-column mt-4">
-                    <div style="max-width:400px;">
+                    <div class="mr-4" style="flex:1;">
                         <div>
                             <i>Add Phone Numbers:</i>
                         </div>
@@ -110,15 +110,33 @@
                             </v-chip>
                         </div>
                         <div v-if="editing" class="mt-2" style="width:200px;">
-                            <v-text-field v-model="temp.addPhone"
-                                v-mask="'(###) ###-####'" color="primary"
-                                placeholder="(123) 456-7890" outlined dense hide-details
-                                append-icon="mdi-plus" @click:append="addPhone()"
-                                @keyup.enter="addPhone()">
+                            <v-text-field v-model="addPhone" v-mask="'(###) ###-####'"
+                                color="primary" placeholder="(###) ###-####" outlined
+                                dense hide-details append-icon="mdi-plus"
+                                @click:append="addPhoneToTemp()"
+                                @keyup.enter="addPhoneToTemp()">
                             </v-text-field>
                         </div>
                     </div>
-                    <div style="max-width:400px;">
+                    <div style="flex:1;">
+                        <div>
+                            <i>Add Emails:</i>
+                        </div>
+                        <div class="d-flex flex-row flex-wrap">
+                            <v-chip v-for="(addEmail, i) in temp.addEmails" :key="i" small
+                                color="primary" text-color="white"
+                                class="justify-center ma-1" style="width:115px;">
+                                {{ addEmail }}
+                            </v-chip>
+                        </div>
+                        <div v-if="editing" class="mt-2" style="width:200px;">
+                            <v-text-field v-model="addEmail" color="primary"
+                                placeholder="example@email.com" outlined dense
+                                hide-details append-icon="mdi-plus"
+                                @click:append="addEmailToTemp()"
+                                @keyup.enter="addEmailToTemp()">
+                            </v-text-field>
+                        </div>
                     </div>
                 </div>
                 <div v-if="editing" class="d-flex justify-end mt-4">
@@ -162,7 +180,9 @@ export default {
                 'Fridays',
                 'Saturdays',
                 'Sundays'
-            ]
+            ],
+            addEmail: '',
+            addPhone: ''
         }
     },
     mounted() {
@@ -194,12 +214,17 @@ export default {
         }
     },
     methods: {
-        addPhone() {
-            if (this.temp.addPhone.replace(/\D/g, '').length != 10) return
+        addPhoneToTemp() {
+            if (this.addPhone.replace(/\D/g, '').length != 10) return
 
-            this.temp.addPhones.push(this.temp.addPhone)
+            this.temp.addPhones.push(this.addPhone)
 
-            this.temp.addPhone = ''
+            this.addPhone = ''
+        },
+        addEmailToTemp() {
+            this.temp.addEmails.push(this.addEmail)
+
+            this.addEmail = ''
         },
         checkTimeLimit() {
             if (this.temp.times.length > 4) this.temp.times.pop()
