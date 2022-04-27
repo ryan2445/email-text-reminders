@@ -90,6 +90,8 @@ export default {
 
             await this.$store.dispatch('usersPut', this.temp)
 
+            this.$store.commit('userProfileSet', this.temp)
+
             this.loading = false
         }
     }

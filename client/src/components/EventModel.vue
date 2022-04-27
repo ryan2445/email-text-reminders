@@ -46,12 +46,12 @@
                             <v-switch v-model="temp.recurring" label="Recurring?"
                                 color="primary" />
                         </div>
-                        <div class="mr-6">
-                            <v-checkbox v-model="temp.sendEmail" label="Send Email"
-                                color="primary" :readonly="!editing" />
-                        </div>
                         <div>
                             <v-checkbox v-model="temp.sendSms" label="Send SMS"
+                                color="primary" :readonly="!editing" />
+                        </div>
+                        <div class="mr-6">
+                            <v-checkbox v-model="temp.sendEmail" label="Send Email"
                                 color="primary" :readonly="!editing" />
                         </div>
                     </div>
@@ -98,10 +98,10 @@
                     </div>
                 </div>
                 <div class="d-flex flex-lg-row flex-column flex-wrap mt-4">
-                    <div v-if="temp.addPhones.length || editing" class="mr-4"
-                        style="flex:1;">
+                    <div v-if="(temp.addPhones.length || editing) && temp.sendSms"
+                        class="mr-4" style="flex:1;">
                         <div>
-                            <i>Add Phone Numbers:</i>
+                            <i>Phone Numbers:</i>
                         </div>
                         <v-chip-group>
                             <v-chip v-for="(addPhone, i) in temp.addPhones" :key="i" small
@@ -120,9 +120,10 @@
                             </v-text-field>
                         </div>
                     </div>
-                    <div v-if="temp.addEmails.length || editing" style="flex:1;">
+                    <div v-if="(temp.addEmails.length || editing) && temp.sendEmail"
+                        style="flex:1;">
                         <div>
-                            <i>Add Emails:</i>
+                            <i>Emails:</i>
                         </div>
                         <v-chip-group>
                             <v-chip v-for="(addEmail, i) in temp.addEmails" :key="i" small
