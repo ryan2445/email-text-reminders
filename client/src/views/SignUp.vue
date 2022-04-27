@@ -6,7 +6,7 @@
                 <v-card class="elevation-12">
                     <v-card-text>
                         <div class="mb-8"
-                            style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
+                            style="font-size:30px; font-family:'Playfair Display', serif; font-weight:700;">
                             Sign Up
                         </div>
                         <validation-observer v-slot="{ handleSubmit }">

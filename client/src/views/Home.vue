@@ -2,7 +2,8 @@
     <div class="d-flex justify-center ma-lg-8 ma-4">
         <div :style="$vuetify.breakpoint.smAndDown ? 'width:100%' : 'min-width:1000px;'">
             <div class="d-flex flex-row justify-space-between mb-8">
-                <div style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
+                <div
+                    style="font-size:30px; font-family:'Playfair Display', serif; font-weight:700;">
                     Events List
                 </div>
                 <div>
@@ -14,14 +15,25 @@
                     </v-btn>
                 </div>
             </div>
-            <div v-if="events" class="">
+            <div v-if="events.length" class="">
                 <div v-for="(event, i) in events" :key="i">
                     <event-model :event="event" @cancel="events.pop()"
                         @delete="deleteEvent($event)" class="my-4" />
                 </div>
             </div>
-            <div v-else>
+            <div v-else-if="loading" class="text-center">
                 <v-progress-circular indeterminate color="primary" />
+            </div>
+            <div v-else class="text-center mt-16">
+                <img src="@/assets/images/calendar.svg" width="100" height="100" />
+                <div>
+                    <div>
+                        <b>You have no events yet!</b>
+                    </div>
+                    <div>
+                        <i>Create one by clicking the "Add Event" button</i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -30,13 +42,18 @@
 export default {
     data() {
         return {
-            events: []
+            events: [],
+            loading: false
         }
     },
     async mounted() {
+        this.loading = true
+
         const response = await this.$store.dispatch('eventsGet')
 
         this.events = response.items
+
+        this.loading = false
     },
     methods: {
         addEvent() {

@@ -4,7 +4,7 @@
             :style="{width: $vuetify.breakpoint.lgAndUp ? '400px' : '100%'}">
             <v-card-text>
                 <div class="mb-8"
-                    style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
+                    style="font-size:30px; font-family:'Playfair Display', serif; font-weight:700;">
                     Sign In
                 </div>
                 <validation-observer v-slot="{ handleSubmit }">
@@ -66,9 +66,6 @@ export default {
 .background {
     height: 100vh;
     background: url(@/assets/images/mountains.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
     background-size: cover;
     display: flex;
     justify-content: center;

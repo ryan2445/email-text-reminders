@@ -2,7 +2,7 @@
     <div class="d-flex justify-center ma-lg-8 ma-4">
         <v-card v-if="userProfile" class="pa-10">
             <div class="text-center mb-8"
-                style="font-size:30px; font-family:'Libre Bodini'; font-weight:700;">
+                style="font-size:30px; font-family:'Playfair Display', serif; font-weight:700;">
                 Account Settings
             </div>
             <div class="d-flex flex-column" style="max-width: 300px">
