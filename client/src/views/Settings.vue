@@ -41,6 +41,9 @@
         <div v-else>
             <v-progress-circular indeterminate color="primary" />
         </div>
+        <v-snackbar v-model="snackbar" color="primary">
+            <v-icon>mdi-check</v-icon> Account settings saved!
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -55,7 +58,8 @@ export default {
                 firstname: '',
                 lastname: '',
                 phone: ''
-            }
+            },
+            snackbar: false
         }
     },
     async mounted() {
@@ -93,6 +97,8 @@ export default {
             this.$store.commit('userProfileSet', this.temp)
 
             this.loading = false
+
+            this.snackbar = true
         }
     }
 }
