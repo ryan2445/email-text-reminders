@@ -28,7 +28,7 @@
                 <img src="@/assets/images/calendar.svg" width="100" height="100" />
                 <div>
                     <div>
-                        <b>You have no events yet!</b>
+                        <b>You don't have any events yet!</b>
                     </div>
                     <div>
                         <i>Create one by clicking the "Add Event" button</i>
