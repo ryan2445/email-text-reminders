@@ -46,13 +46,15 @@
                             <v-switch v-model="temp.recurring" label="Recurring?"
                                 color="primary" />
                         </div>
-                        <div>
-                            <v-checkbox v-model="temp.sendSms" label="Send SMS"
-                                color="primary" :readonly="!editing" />
-                        </div>
                         <div class="mr-6">
+                            <v-checkbox v-model="temp.sendSms" label="Send SMS"
+                                color="primary" :readonly="!editing"
+                                :disabled="!userProfile.phone" />
+                        </div>
+                        <div>
                             <v-checkbox v-model="temp.sendEmail" label="Send Email"
-                                color="primary" :readonly="!editing" />
+                                color="primary" :readonly="!editing"
+                                :disabled="!userProfile.email" />
                         </div>
                     </div>
                 </div>
@@ -98,13 +100,13 @@
                     </div>
                 </div>
                 <div class="d-flex flex-lg-row flex-column flex-wrap mt-4">
-                    <div v-if="(temp.addPhones.length || editing) && temp.sendSms"
-                        class="mr-4" style="flex:1;">
+                    <div v-if="(addPhones || editing) && temp.sendSms" class="mr-4"
+                        style="flex:1;">
                         <div>
                             <i>Phone Numbers:</i>
                         </div>
                         <v-chip-group>
-                            <v-chip v-for="(addPhone, i) in temp.addPhones" :key="i" small
+                            <v-chip v-for="(addPhone, i) in addPhones" :key="i" small
                                 color="primary" text-color="white"
                                 class="justify-center ma-1" style="width:115px;"
                                 @click="editing && removePhoneFromTemp(i)">
@@ -120,13 +122,12 @@
                             </v-text-field>
                         </div>
                     </div>
-                    <div v-if="(temp.addEmails.length || editing) && temp.sendEmail"
-                        style="flex:1;">
+                    <div v-if="(addEmails || editing) && temp.sendEmail" style="flex:1;">
                         <div>
                             <i>Emails:</i>
                         </div>
                         <v-chip-group>
-                            <v-chip v-for="(addEmail, i) in temp.addEmails" :key="i" small
+                            <v-chip v-for="(addEmail, i) in addEmails" :key="i" small
                                 color="primary" text-color="white"
                                 class="justify-center ma-1" style="width:115px;"
                                 @click="editing && removeEmailFromTemp(i)">
@@ -164,6 +165,7 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash'
+import { mapGetters } from 'vuex'
 export default {
     props: {
         event: {
@@ -193,6 +195,14 @@ export default {
         if (this.event.new) this.editing = true
     },
     computed: {
+        ...mapGetters(['userProfile']),
+        addPhones() {
+            return [this.userProfile.phone].concat(this.temp.addPhones)
+        },
+        addEmails() {
+            return [this.userProfile.email].concat(this.temp.addEmails)
+        },
+        addEmails() {},
         availableTimes() {
             let times = []
             for (let i = 1; i <= 24; i++) {
@@ -226,7 +236,9 @@ export default {
             this.addPhone = ''
         },
         removePhoneFromTemp(index) {
-            this.temp.addPhones.splice(index, 1)
+            const toRemove = this.userProfile.phone ? index - 1 : index
+
+            this.temp.addPhones.splice(toRemove, 1)
         },
         addEmailToTemp() {
             this.temp.addEmails.push(this.addEmail)
@@ -234,7 +246,9 @@ export default {
             this.addEmail = ''
         },
         removeEmailFromTemp(index) {
-            this.temp.addEmails.splice(index, 1)
+            const toRemove = this.userProfile.phone ? index - 1 : index
+
+            this.temp.addEmails.splice(toRemove, 1)
         },
         checkTimeLimit() {
             if (this.temp.times.length > 4) this.temp.times.pop()

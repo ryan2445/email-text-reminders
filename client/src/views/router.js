@@ -48,6 +48,8 @@ router.beforeEach(async (to, from, next) => {
   
   if (!store.getters.user) await store.dispatch('getUser', token)
 
+  if (!store.getters.userProfile) await store.dispatch('usersGet')
+
   return next()
 })
 
