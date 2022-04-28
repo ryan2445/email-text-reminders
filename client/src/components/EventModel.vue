@@ -129,12 +129,12 @@
                         <v-chip-group>
                             <v-chip v-for="(addEmail, i) in addEmails" :key="i" small
                                 color="primary" text-color="white"
-                                class="justify-center ma-1" style="width:115px;"
+                                class="justify-center ma-1"
                                 @click="editing && removeEmailFromTemp(i)">
                                 {{ addEmail }}
                             </v-chip>
                         </v-chip-group>
-                        <div v-if="editing" class="mt-2" style="width:200px;">
+                        <div v-if="editing" class="mt-2" style="width:215px;">
                             <v-text-field v-model="addEmail" color="primary"
                                 placeholder="example@email.com" outlined dense
                                 hide-details append-icon="mdi-plus"
