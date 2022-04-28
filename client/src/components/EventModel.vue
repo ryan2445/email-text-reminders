@@ -202,7 +202,6 @@ export default {
         addEmails() {
             return [this.userProfile.email].concat(this.temp.addEmails)
         },
-        addEmails() {},
         availableTimes() {
             let times = []
             for (let i = 1; i <= 24; i++) {
